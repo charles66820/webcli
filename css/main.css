@@ -1,0 +1,155 @@
+/* Global */
+input[type=text],
+input[type=password]{
+    padding: 8px;
+	border-radius: 8px;
+}
+
+button {
+    padding: 8px;
+	border-radius: 8px;
+}
+
+pre.terminal {
+	height: 200px;
+	overflow: scroll;
+    background-color: black;
+	color: white;
+}
+
+/* Document */
+body {
+    margin-top: 88px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding: 0px;
+    background-color: #eee;
+}
+
+header {
+    height: 62px;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    z-index: 2;
+    background-color: #2A2A2A;
+    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.50);
+}
+
+header nav {
+	width: calc(100% - 40%);
+    position: absolute;
+    left: 20%;
+}
+
+header nav a.icon {
+    cursor: pointer;
+    height: 60px !important;
+    padding: 0px 8px !important;
+}
+
+header nav a.nav-item,
+header nav form button {
+	height: calc(100% - 5px);
+    max-width: 160px;
+    padding: 20px 8px 20px 8px;
+    display: inline-block;
+    color: white;
+	background: none;
+    border: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0);
+    text-decoration: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: pointer;
+	border-radius: 0;
+}
+
+header nav a:hover,
+header nav form button:hover,
+header nav a:focus,
+header nav form button:focus {
+    background-color: rgb(30, 30, 30);
+    border-bottom-color: rgb(0, 150, 0);
+}
+
+header nav a.active {
+    border-bottom-color: rgb(0, 150, 0);
+}
+
+header nav form {
+	height: 100%;
+	display: initial;
+	position: absolute;
+    right: 0;
+}
+
+header nav form input {
+    max-width: 160px;
+}
+
+main {
+    width: calc(100% - 16px);
+    padding: 8px;
+    background-color: white;
+    display: block;
+}
+
+main article {
+    margin: 8px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    width: calc(100% - 48px);
+    height: calc(100% - 48px);
+    padding: 16px;
+}
+
+main article section {
+    margin: 8px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    width: calc(100% - 48px);
+    height: calc(100% - 48px);
+    padding: 16px;
+}
+
+main article img {
+    max-width: 100%;
+}
+
+footer {
+    width: 100%;
+    min-height: 130px;
+	display: flex;
+	justify-content: center;
+    background-color: #2A2A2A;
+}
+
+footer section {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+footer section a {
+    color: gray;
+    text-decoration: none;
+	margin: 8px;
+}
+
+footer section:last-child a {
+    color: red;
+}
+
+@media all and (min-width: 777px) {
+    main {
+        max-width: 1000px;
+        margin: 30px auto;
+    }
+}
+
+@media all and (max-width: 777px) {
+    main {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+}
