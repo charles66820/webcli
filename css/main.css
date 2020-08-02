@@ -1,20 +1,20 @@
 /* Global */
 input[type=text],
-input[type=password]{
+input[type=password] {
     padding: 8px;
-	border-radius: 8px;
+    border-radius: 8px;
 }
 
 button {
     padding: 8px;
-	border-radius: 8px;
+    border-radius: 8px;
 }
 
 pre.terminal {
-	height: 200px;
-	overflow: scroll;
+    height: 200px;
+    overflow: scroll;
     background-color: black;
-	color: white;
+    color: white;
 }
 
 /* Document */
@@ -39,7 +39,7 @@ header {
 }
 
 header nav {
-	width: calc(100% - 40%);
+    width: calc(100% - 40%);
     position: absolute;
     left: 20%;
 }
@@ -80,9 +80,9 @@ header nav a.active {
 }
 
 header nav form {
-	height: 100%;
-	display: initial;
-	position: absolute;
+    height: 100%;
+    display: initial;
+    position: absolute;
     right: 0;
 }
 
@@ -120,20 +120,20 @@ main article img {
 footer {
     width: 100%;
     min-height: 130px;
-	display: flex;
-	justify-content: center;
+    display: flex;
+    justify-content: center;
     background-color: #2A2A2A;
 }
 
 footer section {
-	display: flex;
-	flex-flow: row wrap;
+    display: flex;
+    flex-flow: row wrap;
 }
 
 footer section a {
     color: gray;
     text-decoration: none;
-	margin: 8px;
+    margin: 8px;
 }
 
 footer section:last-child a {
