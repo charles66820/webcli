@@ -52,19 +52,19 @@ header nav a.icon {
 
 header nav a.nav-item,
 header nav form button {
-	height: calc(100% - 5px);
+    height: 20px;
     max-width: 160px;
     padding: 20px 8px 20px 8px;
     display: inline-block;
     color: white;
-	background: none;
+    background: none;
     border: none;
     border-bottom: 2px solid rgba(0, 0, 0, 0);
     text-decoration: none;
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: pointer;
-	border-radius: 0;
+    border-radius: 0;
 }
 
 header nav a:hover,
