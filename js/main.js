@@ -53,6 +53,22 @@
 	// Server
 	let serverId = 1;
 
+	// Init
+	if (localStorage.token) {
+		toggle($("#login"));
+		toggle($("#logout"));
+	}
+
+	function notify(title, msg) {
+		if (Notification.permission !== "granted") Notification.requestPermission();
+		new Notification(title, {
+			icon: "img/icon.gif",
+			body: msg,
+		}).addEventListener("click", () => {
+			window.focus();
+		});
+	}
+
 	// Auth
 	loginBtn.addEventListener("click", () => {
 		fetch(loginApiServer + "/login", {
@@ -67,9 +83,10 @@
 					localStorage.token = data.token;
 					toggle($("#login"));
 					toggle($("#logout"));
+					notify("Login", "You are login!");
 				});
 			else
-				return Promise.reject(new Error('Unexpected response'));
+				return notify("Login", "Check your credentials!");
 		}).catch(function (err) {
 			alert(err.message);
 		});
@@ -78,6 +95,9 @@
 	logoutBtn.addEventListener("click", () => {
 		localStorage.removeItem("userid");
 		localStorage.removeItem("token");
+		toggle($("#login"));
+		toggle($("#logout"));
+		notify("Logout", "You are logout!");
 	});
 
 	// Actions
@@ -88,10 +108,11 @@
 				"Authorization": localStorage.token
 			}
 		}).then(res => {
-			if (res.ok)
+			if (res.ok) {
+				notify("Actions", "Server is starting!");
 				return attatchToActionTerminal();
-			else
-				return Promise.reject(new Error('Unexpected response'));
+			} else
+				return notify("Actions", "Error on starting server!");
 		});
 	});
 
@@ -102,10 +123,11 @@
 				"Authorization": localStorage.token
 			}
 		}).then(res => {
-			if (res.ok)
+			if (res.ok){
+				notify("Actions", "Server is stopping!");
 				return attatchToActionTerminal();
-			else
-				return Promise.reject(new Error('Unexpected response'));
+			} else
+				return notify("Actions", "Error on stopping server!");
 		});
 	});
 
