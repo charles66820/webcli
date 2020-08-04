@@ -86,7 +86,9 @@
 					notify("Login", "You are login!");
 				});
 			else
-				return notify("Login", "Check your credentials!");
+				return res.json().then(data => {
+					notify("Login", "Check your credentials!\n" + data.error);
+				});
 		}).catch(function (err) {
 			alert(err.message);
 		});
@@ -102,7 +104,7 @@
 
 	// Actions
 	startBtn.addEventListener("click", () => {
-		fetch(apiServer + "/servers/" + serverId + "/start", {
+		fetch(apiServer + "/servers/" + serverId + "/actions/start", {
 			method: "GET",
 			headers: {
 				"Authorization": localStorage.token
@@ -112,12 +114,16 @@
 				notify("Actions", "Server is starting!");
 				return attatchToActionTerminal();
 			} else
-				return notify("Actions", "Error on starting server!");
+			return res.json().then(data => {
+				notify("Actions", "Error on starting server!\n" + data.error);
+			});
+		}).catch(function (err) {
+			alert(err.message);
 		});
 	});
 
 	stopBtn.addEventListener("click", () => {
-		fetch(apiServer + "/servers/" + serverId + "/stop", {
+		fetch(apiServer + "/servers/" + serverId + "/actions/stop", {
 			method: "GET",
 			headers: {
 				"Authorization": localStorage.token
@@ -127,7 +133,11 @@
 				notify("Actions", "Server is stopping!");
 				return attatchToActionTerminal();
 			} else
-				return notify("Actions", "Error on stopping server!");
+			return res.json().then(data => {
+				notify("Actions", "Error on stopping server!\n" + data.error);
+			});
+		}).catch(function (err) {
+			alert(err.message);
 		});
 	});
 
@@ -136,11 +146,14 @@
 		if (!serverWs) {
 			showMessage("Connecting...", serverTerminal);
 			serverWs = new WebSocket(wsServer + "/servers/" + serverId + "/terminal", localStorage.token, { headers: { Authorization: localStorage.token } });
-			serverWs.addEventListener("error", () => {
+			serverWs.addEventListener("error", err => {
 				showMessage("WebSocket error", serverTerminal);
 			});
 			serverWs.addEventListener("open", () => {
 				showMessage("Server terminal connection established", serverTerminal);
+			});
+			serverWs.addEventListener("message", msg => {
+				showMessage(msg.data, serverTerminal);
 			});
 			serverWs.addEventListener("close", () => {
 				showMessage("Server terminal connection closed", serverTerminal);

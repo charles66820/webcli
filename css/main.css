@@ -12,7 +12,7 @@ button {
 
 pre.terminal {
     height: 200px;
-    overflow: scroll;
+    overflow-y: scroll;
     background-color: black;
     color: white;
 }
