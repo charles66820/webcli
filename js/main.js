@@ -21,10 +21,14 @@
 		actionWs.addEventListener("open", () => {
 			showMessage("Actions terminal connection established", actionTerminal);
 		});
+		actionWs.addEventListener("message", msg => {
+			showMessage(msg.data, actionTerminal);
+		});
 		actionWs.addEventListener("close", () => {
 			showMessage("Actions terminal connection closed", actionTerminal);
 			actionWs = null;
 		});
+		return actionWs;
 	}
 
 	// Config
@@ -89,7 +93,7 @@
 				return res.json().then(data => {
 					notify("Login", "Check your credentials!\n" + data.error);
 				});
-		}).catch(function (err) {
+		}).catch(err => {
 			alert(err.message);
 		});
 	});
@@ -104,6 +108,7 @@
 
 	// Actions
 	startBtn.addEventListener("click", () => {
+		let actionWs = attatchToActionTerminal();
 		fetch(apiServer + "/servers/" + serverId + "/actions/start", {
 			method: "GET",
 			headers: {
@@ -112,17 +117,19 @@
 		}).then(res => {
 			if (res.ok) {
 				notify("Actions", "Server is starting!");
-				return attatchToActionTerminal();
-			} else
-			return res.json().then(data => {
-				notify("Actions", "Error on starting server!\n" + data.error);
-			});
-		}).catch(function (err) {
+			} else {
+				actionWs.close();
+				return res.json().then(data => {
+					notify("Actions", "Error on starting server!\n" + data.error);
+				});
+			}
+		}).catch(err => {
 			alert(err.message);
 		});
 	});
 
 	stopBtn.addEventListener("click", () => {
+		let actionWs = attatchToActionTerminal();
 		fetch(apiServer + "/servers/" + serverId + "/actions/stop", {
 			method: "GET",
 			headers: {
@@ -131,12 +138,13 @@
 		}).then(res => {
 			if (res.ok){
 				notify("Actions", "Server is stopping!");
-				return attatchToActionTerminal();
-			} else
-			return res.json().then(data => {
-				notify("Actions", "Error on stopping server!\n" + data.error);
-			});
-		}).catch(function (err) {
+			} else {
+				actionWs.close();
+				return res.json().then(data => {
+					notify("Actions", "Error on stopping server!\n" + data.error);
+				});
+			}
+		}).catch(err => {
 			alert(err.message);
 		});
 	});
