@@ -7,29 +7,60 @@
 		elem.style.visibility = elem.style.visibility == "visible" ? "hidden" : "visible";
 	}
 
-	function showMessage(msg, term) {
-		term.textContent += "\n" + msg;
+	function removeLastLine(str, cb) {
+		cb(str.substring(0, str.lastIndexOf("\n")));
+	}
+
+	async function showMessage(msg, term) {
+		// Process
+		let res = JSON.parse(msg);
+
+		let txt = "";
+		if (res.code == 1) {
+			txt = res.content.stdout;
+		} else if (res.code == 2) {
+			txt = res.content.stderr;
+		} else if (res.code == 200) {
+			txt = res.content.msg;
+		} else if (res.code == 500) {
+			alert("Error : " + res.content.msg);
+		} else {
+			notify("Terminal", res.content.error);
+		}
+
+		// Print
+		//term.textContent += "\n" + txt;
+		//term.innerText += txt;
+		if (/^\033\[1A.*/i.test(txt)) removeLastLine(term.innerHTML, str => term.innerHTML = str);
+		term.innerHTML += ansi_up.ansi_to_html(txt);
 		term.scrollTop = term.scrollHeight;
 	}
 
+	function displayStatus(msg, status) {
+		status.innerText = msg;
+	}
+
 	function attatchToActionTerminal() {
-		showMessage("Connecting...", actionTerminal);
+		displayStatus("Connecting...", actionStatus);
 		actionWs = new WebSocket(wsServer + "/servers/" + serverId + "/actions/terminal", localStorage.token, { headers: { Authorization: localStorage.token } });
 		actionWs.addEventListener("error", () => {
-			showMessage("WebSocket error", actionTerminal);
+			displayStatus("WebSocket error", actionStatus);
 		});
 		actionWs.addEventListener("open", () => {
-			showMessage("Actions terminal connection established", actionTerminal);
+			displayStatus("Actions terminal connection established", actionStatus);
 		});
 		actionWs.addEventListener("message", msg => {
 			showMessage(msg.data, actionTerminal);
 		});
 		actionWs.addEventListener("close", () => {
-			showMessage("Actions terminal connection closed", actionTerminal);
+			displayStatus("Actions terminal connection closed", actionStatus);
 			actionWs = null;
 		});
 		return actionWs;
 	}
+
+	// Init
+	let ansi_up = new AnsiUp;
 
 	// Config
 	const loginApiServer = "http://localhost:8000";
@@ -47,6 +78,8 @@
 	const stopBtn = $("#stopbtn");
 
 	// Terminals
+	const actionStatus = $("#actionStatus");
+	const serverStatus = $("#serverStatus");
 	const actionTerminal = $("#actionterminal");
 	const serverTerminal = $("#serverterminal");
 	const cmd = $("#cmd");
@@ -136,7 +169,7 @@
 				"Authorization": localStorage.token
 			}
 		}).then(res => {
-			if (res.ok){
+			if (res.ok) {
 				notify("Actions", "Server is stopping!");
 			} else {
 				actionWs.close();
@@ -152,26 +185,26 @@
 	// Terminals
 	setInterval(() => {
 		if (!serverWs) {
-			showMessage("Connecting...", serverTerminal);
+			displayStatus("Connecting...", serverStatus);
 			serverWs = new WebSocket(wsServer + "/servers/" + serverId + "/terminal", localStorage.token, { headers: { Authorization: localStorage.token } });
 			serverWs.addEventListener("error", err => {
-				showMessage("WebSocket error", serverTerminal);
+				displayStatus("WebSocket error", serverStatus);
 			});
 			serverWs.addEventListener("open", () => {
-				showMessage("Server terminal connection established", serverTerminal);
+				displayStatus("Server terminal connection established", serverStatus);
 			});
 			serverWs.addEventListener("message", msg => {
 				showMessage(msg.data, serverTerminal);
 			});
 			serverWs.addEventListener("close", () => {
-				showMessage("Server terminal connection closed", serverTerminal);
+				displayStatus("Server terminal connection closed", serverStatus);
 				serverWs = null;
 			});
 		}
-	}, 2000);
+	}, 5000);
 
 	sendcmd.addEventListener("click", () => {
-		if (!serverWs) showMessage("Not connect to server terminal", serverTerminal);
+		if (!serverWs) displayStatus("Not connect to server terminal", serverStatus);
 		else serverWs.send(cmd.value);
 	});
 })();

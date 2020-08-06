@@ -40,10 +40,12 @@
         <h1>Terminals</h1>
         <section>
           <h2>Action terminal :</h2>
+          <p id="actionStatus" class="displaystatus"></p>
           <pre id="actionterminal" class="terminal"></pre>
         </section>
         <section>
           <h2>Server terminal :</h2>
+          <p id="serverStatus" class="displaystatus"></p>
           <pre id="serverterminal" class="terminal"></pre>
           <input type="text" id="cmd" placeholder="cmd">
           <button id="sendcmd" type="button" title="Send command">
@@ -61,6 +63,7 @@
       <section>
       </section>
     </footer>
-    <script src="js/main.js"></script>
+    <script src="js/ansi_up.js" type="text/javascript"></script>
+    <script src="js/main.js" type="text/javascript"></script>
   </body>
 </html>
