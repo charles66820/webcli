@@ -31,7 +31,7 @@
 		// Print
 		//term.textContent += "\n" + txt;
 		//term.innerText += txt;
-		if (/^\033\[1A.*/i.test(txt)) removeLastLine(term.innerHTML, str => term.innerHTML = str);
+		//if (/^\033\[1A.*/i.test(txt)) removeLastLine(term.innerHTML, str => term.innerHTML = str);
 		term.innerHTML += ansi_up.ansi_to_html(txt);
 		term.scrollTop = term.scrollHeight;
 	}
@@ -40,7 +40,7 @@
 		status.innerText = msg;
 	}
 
-	function attatchToActionTerminal() {
+	function attachToActionTerminal() {
 		displayStatus("Connecting...", actionStatus);
 		actionWs = new WebSocket(wsServer + "/servers/" + serverId + "/actions/terminal", localStorage.token, { headers: { Authorization: localStorage.token } });
 		actionWs.addEventListener("error", () => {
@@ -63,9 +63,9 @@
 	let ansi_up = new AnsiUp;
 
 	// Config
-	const loginApiServer = "http://localhost:8000";
-	const apiServer = "http://localhost:8080";
-	const wsServer = "ws://localhost:8080";
+	const loginApiServer = "http://api.magicorp.fr/magicorp/v1";
+	const apiServer = "http://api.magicorp.fr/batrenis/v1";
+	const wsServer = "ws://api.magicorp.fr/batrenis/v1";
 
 	// Auth
 	const username = $("#username");
@@ -141,7 +141,7 @@
 
 	// Actions
 	startBtn.addEventListener("click", () => {
-		let actionWs = attatchToActionTerminal();
+		let actionWs = attachToActionTerminal();
 		fetch(apiServer + "/servers/" + serverId + "/actions/start", {
 			method: "GET",
 			headers: {
@@ -162,7 +162,7 @@
 	});
 
 	stopBtn.addEventListener("click", () => {
-		let actionWs = attatchToActionTerminal();
+		let actionWs = attachToActionTerminal();
 		fetch(apiServer + "/servers/" + serverId + "/actions/stop", {
 			method: "GET",
 			headers: {
