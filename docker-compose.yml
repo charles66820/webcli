@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  webcli:
+    container_name: webcli
+    image: node:10-alpine
+    user: "node"
+    working_dir: /home/node/app
+    command: "/bin/sh -c \"npm install && npm start -s\""
+    volumes:
+      - '.:/home/node/app'
+    labels:
+      - "traefik.http.routers.webcli.rule=Host(`rcon.magicorp.fr`)"
+      - traefik.http.services.webcli.loadbalancer.server.port=8080
+    ports:
+      - 8080:8080
+    networks:
+      - backend
+
+networks:
+  backend:
+    external:
+      name: backend

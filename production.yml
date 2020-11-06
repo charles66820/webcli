@@ -1,0 +1,9 @@
+version: "2"
+
+services:
+  webcli:
+    labels:
+      - traefik.http.routers.webcli.middlewares=https-redirectscheme
+      - "traefik.http.routers.webcli-secure.rule=Host(`rcon.magicorp.fr`)"
+      - traefik.http.routers.webcli-secure.tls=true
+      - traefik.http.routers.webcli-secure.tls.certresolver=sslresolver

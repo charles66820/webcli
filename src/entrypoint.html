@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/img/icon.gif" type="image/gif" async>
+    <title>Web rcon client</title>
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a class="nav-item icon" href="/">
+          <img src="/img/icon.gif" alt="site icon" height="60" async>
+        </a>
+        <a class="nav-item active" href="/">Home</a>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <h2>Server terminal :</h2>
+        <form id="connection">
+          <input type="text" name="username" placeholder="username">
+          <input type="text" name="password" placeholder="password">
+          <input type="text" name="host" placeholder="host">
+          <button type="submit" name="start" title="Start rcon connection">Start connection</button>
+          <button type="reset" name="close" title="Close rcon connection">Close connection</button>
+        </form>
+        <p id="terminalstatus" class="displaystatus"></p>
+        <pre id="rconterminal" class="terminal"></pre>
+        <form id="cmd">
+          <input type="text" name="cmd" placeholder="cmd">
+        </form>
+      </section>
+    </main>
+    <footer>
+      <section>
+        <a href="/">Home</a>
+        <a href="#top">Go top</a>
+        <a href="https://www.magicorp.fr" target="_blank">Magicorp</a>
+      </section>
+      <section>
+      </section>
+    </footer>
+    <script src="/js/ansi_up.js" type="text/javascript"></script>
+    <script src="/js/main.js" type="text/javascript"></script>
+  </body>
+</html>
