@@ -22,11 +22,11 @@
 		let res = JSON.parse(msg);
 
 		let txt = "";
-		if (res.code == 1)
+		if (res.code == 1) // msg
 			txt = res.msg;
-		else if (res.code == 2)
+		else if (res.code == 2) // error
 			txt = "Error : " + res.error;
-		else
+		else // other
 			notify("Terminal", `Response with code : ${res.code}\n with msg : ${res.msg}\n with error : ${res.error}`);
 
 		// Print
@@ -49,7 +49,7 @@
 		terminalStatus.innerText = "Connecting...";
 		ws = new WebSocket(wsUrl);
 		ws.addEventListener("error", e => {
-			console.log(e);
+			console.error(e);
 			terminalStatus.innerText = "WebSocket error";
 			notify("Rcon terminal", "Connection error!\n");
 		});
@@ -74,16 +74,21 @@
 
 	// Send commands
 	$("#connection").addEventListener("submit", function (e) {
-		sendCmd(this["username"].value + " " + this["password"].value + " " + this["host"].value); //TODO:
+		sendCmd(JSON.stringify({
+			code: 0,
+			host: this["host"].value,
+			port: this["port"].value,
+			password: this["password"].value
+		}));
 		e.preventDefault();
 	});
 
 	$('button[name="close"]').addEventListener("click", () => {
-		sendCmd("exit");
+		sendCmd(JSON.stringify({ code: 1, msg: "exit" }));
 	});
 
 	$("#cmd").addEventListener("submit", function (e) {
-		sendCmd(this["cmd"].value);
+		sendCmd(JSON.stringify({ code: 1, msg: this["cmd"].value }));
 		e.preventDefault();
 	});
 

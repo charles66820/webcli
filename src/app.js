@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const Rcon = require("rcon");
 const WebSocket = require("ws");
 
 // app settings
@@ -15,7 +16,7 @@ app.set("twig options", {
 
 // execute on all request
 app.use((req, res, next) => {
-    next();
+  next();
 });
 
 // load public folder
@@ -36,12 +37,48 @@ server.on("upgrade", async (req, socket, head) => {
 });
 
 wss.on("connection", (ws, req) => {
-  ws.on('message', function incoming(data) {
-    //TODO:
-    ws.send(JSON.stringify({ code: 1, msg: data + "\n" }));
-    ws.send(JSON.stringify({ code: 2, error: "test\n" }));
+  var conn = null;
+  ws.on("message", function incoming(data) {
+    let res = JSON.parse(data);
+
+    if (res.code == 0) { // auth
+      try {
+        conn = new Rcon(res.host, res.port, res.password);
+        conn.on("auth", function () {
+          ws.send(JSON.stringify({ code: 1, msg: "Authenticated!\n" }));
+        });
+
+        conn.on("response", data => {
+          ws.send(JSON.stringify({ code: 1, msg: data + "\n" }));
+        });
+
+        conn.on("server", data => {
+          ws.send(JSON.stringify({ code: 1, msg: data + "\n" }));
+        });
+
+        conn.on("error", function () {
+          ws.send(JSON.stringify({ code: 2, error: "Rcon connection error!\n" }));
+          conn = null;
+        });
+
+        conn.on("end", function () {
+          ws.send(JSON.stringify({ code: 1, msg: "Rcon connection close!\n" }));
+          conn.disconnect();
+          conn = null;
+        });
+        conn.connect();
+      } catch (e) {
+        ws.send(JSON.stringify({ code: 2, error: "Rcon error : " + e.message + "\n" }));
+      }
+
+    } else if (res.code == 1) { // cmd
+      if (!conn) ws.send(JSON.stringify({ code: 2, error: "Rcon is not connected without any server\n" }));
+      else if (res.msg != "exit") conn.send(res.msg);
+      else conn.disconnect();
+    } else // other
+      ws.send(JSON.stringify({ code: res.code, msg: res.msg, error: "Unknown code\n" }));
   });
-  ws.send(JSON.stringify({ code: 1, msg: "Welcome to web rcon client!\n"}));
+  ws.send(JSON.stringify({ code: 1, msg: "Welcome to web rcon client!\n" }));
 });
 
 // server run message
