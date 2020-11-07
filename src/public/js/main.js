@@ -39,7 +39,7 @@
 
 	// Init
 	let ansi_up = new AnsiUp;
-	let wsUrl = "ws://" + location.hostname;
+	let wsUrl = "wss://" + location.hostname;
 	if (location.port) wsUrl += ":" + location.port;
 	const terminalStatus = $("#terminalstatus");
 	const rconTerminal = $("#rconterminal");
