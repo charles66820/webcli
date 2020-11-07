@@ -1,6 +1,6 @@
 /* Global */
-input[type=text],
-input[type=password] {
+input[type="text"],
+input[type="password"] {
     padding: 8px;
     border-radius: 8px;
 }
@@ -15,8 +15,51 @@ p.displaystatus::before {
 }
 
 pre.terminal {
+    padding: 0 8px;
+    margin: 0;
     height: 200px;
     overflow-y: scroll;
+    background-color: black;
+    color: white;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+pre.terminal::-webkit-scrollbar {
+    width: 10px;
+}
+
+pre.terminal::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0);
+}
+
+pre.terminal::-webkit-scrollbar-thumb {
+    background: rgba(80, 80, 80, .8);
+    border-radius: 10px;
+}
+
+pre.terminal::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 100, 100, .8);
+}
+
+input[name="cmd"] {
+    padding: 4px 8px !important;
+    margin: 0;
+    margin-bottom: 1ex;
+    width: calc(100% - 16px);
+    display: block;
+    border-radius: 0;
+    background-color: black;
+    border-style: none;
+    color: white;
+    outline: none;
+    text-indent: 16px;
+}
+
+.terminalCursor {
+    position: absolute;
+    height: 0;
+    width: 16px;
     background-color: black;
     color: white;
 }

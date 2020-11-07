@@ -55,7 +55,7 @@
 		});
 		ws.addEventListener("open", () => {
 			terminalStatus.innerText = "Rcon terminal connection established";
-			notify("Rcon terminal", "Connection established!\n");
+			//notify("Rcon terminal", "Connection established!\n");
 		});
 		ws.addEventListener("message", msg =>
 			showMessage(msg.data, rconTerminal)
