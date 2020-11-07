@@ -89,6 +89,7 @@
 
 	$("#cmd").addEventListener("submit", function (e) {
 		sendCmd(JSON.stringify({ code: 1, msg: this["cmd"].value }));
+		this["cmd"].value = "";
 		e.preventDefault();
 	});
 
