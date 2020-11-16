@@ -12,8 +12,6 @@ services:
     labels:
       - "traefik.http.routers.webcli.rule=Host(`rcon.magicorp.fr`)"
       - traefik.http.services.webcli.loadbalancer.server.port=8080
-    ports:
-      - 8080:8080
     networks:
       - backend
 
