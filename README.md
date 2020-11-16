@@ -17,7 +17,7 @@ npm install
 docker-compose up -d
 
 # For production
-docker-compose -f docker-compose.yml -f production.yml up
+docker-compose -f docker-compose.yml -f production.yml up -d
 ```
 
 > remove : first for update
