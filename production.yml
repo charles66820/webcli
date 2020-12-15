@@ -2,6 +2,7 @@ version: "2"
 
 services:
   webcli:
+    restart: always
     labels:
       - traefik.http.routers.webcli.middlewares=https-redirectscheme
       - "traefik.http.routers.webcli-secure.rule=Host(`rcon.magicorp.fr`)"
