@@ -9,7 +9,7 @@
   "author": "charles66820",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "rcon": "^1.0.3",
     "ws": "^7.4.6"
   }
